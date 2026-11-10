@@ -1,15 +1,23 @@
-﻿**/bin/
-**/obj/
-**/node_modules/
-**/dist/
-Backend/InteriorDesign.Api/Data/*.db
-Backend/InteriorDesign.Api/Data/*.db-shm
-Backend/InteriorDesign.Api/Data/*.db-wal
-Backend/InteriorDesign.Api/wwwroot/uploads/**/*
-!Backend/InteriorDesign.Api/wwwroot/uploads/**/.gitkeep
-Backend/InteriorDesign.Api/appsettings.Development.local.json
+# .NET
+bin/
+obj/
 .vs/
 *.user
 *.suo
+
+# React
+node_modules/
+dist/
+
+# Environment files
 .env
-.env.localSS
+.env.local
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Uploaded files
+wwwroot/uploads/*
+!wwwroot/uploads/.gitkeep

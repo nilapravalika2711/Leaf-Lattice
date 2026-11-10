@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿# InteriorDesign
 
 An admin-only interior design management application with independent ASP.NET Core and React projects.
@@ -40,3 +41,6 @@ Vite runs at `http://localhost:5173` (or the next available port) and calls the 
 The backend and frontend run independently. Start the API first, then open the Vite URL and sign in with the configured administrator credentials.
 
 
+=======
+# -Leaf-Lattice
+>>>>>>> 56cd494da127da3cb1c63e1092bed93d9680b7f7
