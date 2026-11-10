@@ -1,0 +1,15 @@
+﻿**/bin/
+**/obj/
+**/node_modules/
+**/dist/
+Backend/InteriorDesign.Api/Data/*.db
+Backend/InteriorDesign.Api/Data/*.db-shm
+Backend/InteriorDesign.Api/Data/*.db-wal
+Backend/InteriorDesign.Api/wwwroot/uploads/**/*
+!Backend/InteriorDesign.Api/wwwroot/uploads/**/.gitkeep
+Backend/InteriorDesign.Api/appsettings.Development.local.json
+.vs/
+*.user
+*.suo
+.env
+.env.localSS
