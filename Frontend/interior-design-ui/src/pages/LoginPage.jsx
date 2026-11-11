@@ -39,3 +39,4 @@ export default function LoginPage() {
     </main>
   )
 }
+// End of LoginPage component
