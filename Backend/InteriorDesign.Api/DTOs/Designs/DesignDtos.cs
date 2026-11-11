@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using InteriorDesign.Api.DTOs.Images;
 using InteriorDesign.Api.DTOs.Materials;
 
@@ -12,5 +12,6 @@ public sealed class DesignUpsertRequest
     [Range(typeof(decimal), "0", "9999999999")] public decimal TotalPrice { get; set; }
     public int[] ImageIds { get; set; } = [];
     public int[] MaterialIds { get; set; } = [];
+    public bool IsPublished { get; set; } = true;
 }
-public sealed record DesignResponse(int Id, string Name, string Description, string Category, decimal TotalPrice, DateTime CreatedAtUtc, DateTime UpdatedAtUtc, IReadOnlyList<ImageResponse> Images, IReadOnlyList<MaterialResponse> Materials);
+public sealed record DesignResponse(int Id, string Name, string Description, string Category, decimal TotalPrice, bool IsPublished, DateTime CreatedAtUtc, DateTime UpdatedAtUtc, IReadOnlyList<ImageResponse> Images, IReadOnlyList<MaterialResponse> Materials);

@@ -1,4 +1,4 @@
-﻿namespace InteriorDesign.Api.Models;
+namespace InteriorDesign.Api.Models;
 
 public sealed class Design
 {
@@ -7,6 +7,7 @@ public sealed class Design
     public string Description { get; set; } = "";
     public required string Category { get; set; }
     public decimal TotalPrice { get; set; }
+    public bool IsPublished { get; set; } = true;
     public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAtUtc { get; set; } = DateTime.UtcNow;
     public ICollection<DesignImage> DesignImages { get; set; } = new List<DesignImage>();

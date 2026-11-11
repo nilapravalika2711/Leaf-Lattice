@@ -1,4 +1,4 @@
-﻿using InteriorDesign.Api.DTOs.Images;
+using InteriorDesign.Api.DTOs.Images;
 using InteriorDesign.Api.Models;
 using InteriorDesign.Api.Repositories;
 using InteriorDesign.Api.Services;
@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InteriorDesign.Api.Controllers;
 
-[ApiController, Authorize, Route("api/images")]
+[ApiController, Authorize(Roles = "Admin"), Route("api/images")]
 public sealed class ImagesController(IImageRepository images, IFileStorageService files) : ControllerBase
 {
     [HttpGet]

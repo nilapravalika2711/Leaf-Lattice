@@ -1,4 +1,4 @@
-﻿using InteriorDesign.Api.Models;
+using InteriorDesign.Api.Models;
 
 namespace InteriorDesign.Api.Repositories;
 
@@ -23,7 +23,9 @@ public interface IMaterialRepository
 public interface IDesignRepository
 {
     Task<List<Design>> ListAsync(CancellationToken ct);
+    Task<List<Design>> ListPublishedAsync(CancellationToken ct);
     Task<Design?> FindAsync(int id, CancellationToken ct);
+    Task<Design?> FindPublishedAsync(int id, CancellationToken ct);
     Task<List<ImageAsset>> GetImagesAsync(IEnumerable<int> ids, CancellationToken ct);
     Task<List<Material>> GetMaterialsAsync(IEnumerable<int> ids, CancellationToken ct);
     void Add(Design design);

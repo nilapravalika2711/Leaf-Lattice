@@ -1,4 +1,4 @@
-﻿using InteriorDesign.Api.DTOs.Materials;
+using InteriorDesign.Api.DTOs.Materials;
 using InteriorDesign.Api.Models;
 using InteriorDesign.Api.Repositories;
 using InteriorDesign.Api.Services;
@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InteriorDesign.Api.Controllers;
 
-[ApiController, Authorize, Route("api/materials")]
+[ApiController, Authorize(Roles = "Admin"), Route("api/materials")]
 public sealed class MaterialsController(IMaterialRepository materials, IFileStorageService files) : ControllerBase
 {
     [HttpGet]

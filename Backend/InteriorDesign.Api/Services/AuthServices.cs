@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace InteriorDesign.Api.Services;
@@ -35,12 +35,12 @@ public sealed class PasswordService : IPasswordService
 
 public interface IJwtTokenService
 {
-    (string Token, DateTime ExpiresAtUtc) CreateToken(int adminId, string username, string email);
+    (string Token, DateTime ExpiresAtUtc) CreateToken(int id, string username, string email, string role = "Admin");
 }
 
 public sealed class JwtTokenService(IConfiguration configuration) : IJwtTokenService
 {
-    public (string Token, DateTime ExpiresAtUtc) CreateToken(int adminId, string username, string email)
+    public (string Token, DateTime ExpiresAtUtc) CreateToken(int id, string username, string email, string role = "Admin")
     {
         var key = configuration["Jwt:SigningKey"] ?? "";
         if (Encoding.UTF8.GetByteCount(key) < 32) throw new InvalidOperationException("Jwt:SigningKey must contain at least 32 bytes.");
@@ -48,8 +48,8 @@ public sealed class JwtTokenService(IConfiguration configuration) : IJwtTokenSer
         var header = Encode("{\"alg\":\"HS256\",\"typ\":\"JWT\"}");
         var payload = Encode(System.Text.Json.JsonSerializer.Serialize(new
         {
-            iss = configuration["Jwt:Issuer"], aud = configuration["Jwt:Audience"], sub = adminId.ToString(),
-            name = username, email, iat = DateTimeOffset.UtcNow.ToUnixTimeSeconds(), exp = new DateTimeOffset(expires).ToUnixTimeSeconds()
+            iss = configuration["Jwt:Issuer"], aud = configuration["Jwt:Audience"], sub = id.ToString(),
+            name = username, email, role, iat = DateTimeOffset.UtcNow.ToUnixTimeSeconds(), exp = new DateTimeOffset(expires).ToUnixTimeSeconds()
         }));
         var unsigned = header + "." + payload;
         var signature = HMACSHA256.HashData(Encoding.UTF8.GetBytes(key), Encoding.ASCII.GetBytes(unsigned));

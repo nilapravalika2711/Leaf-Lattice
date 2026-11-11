@@ -1,4 +1,4 @@
-﻿using InteriorDesign.Api.Data;
+using InteriorDesign.Api.Data;
 using InteriorDesign.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,7 +26,9 @@ public sealed class DesignRepository(AppDbContext db) : IDesignRepository
 {
     private IQueryable<Design> Complete => db.Designs.Include(x => x.DesignImages).ThenInclude(x => x.ImageAsset).Include(x => x.DesignMaterials).ThenInclude(x => x.Material);
     public Task<List<Design>> ListAsync(CancellationToken ct) => Complete.AsNoTracking().OrderByDescending(x => x.UpdatedAtUtc).ToListAsync(ct);
+    public Task<List<Design>> ListPublishedAsync(CancellationToken ct) => Complete.AsNoTracking().Where(x => x.IsPublished).OrderByDescending(x => x.UpdatedAtUtc).ToListAsync(ct);
     public Task<Design?> FindAsync(int id, CancellationToken ct) => Complete.FirstOrDefaultAsync(x => x.Id == id, ct);
+    public Task<Design?> FindPublishedAsync(int id, CancellationToken ct) => Complete.FirstOrDefaultAsync(x => x.Id == id && x.IsPublished, ct);
     public Task<List<ImageAsset>> GetImagesAsync(IEnumerable<int> ids, CancellationToken ct) => db.Images.Where(x => ids.Contains(x.Id)).ToListAsync(ct);
     public Task<List<Material>> GetMaterialsAsync(IEnumerable<int> ids, CancellationToken ct) => db.Materials.Where(x => ids.Contains(x.Id)).ToListAsync(ct);
     public void Add(Design design) => db.Designs.Add(design);

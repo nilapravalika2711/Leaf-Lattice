@@ -1,4 +1,4 @@
-﻿using InteriorDesign.Api.Models;
+using InteriorDesign.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace InteriorDesign.Api.Data;
@@ -6,6 +6,7 @@ namespace InteriorDesign.Api.Data;
 public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
     public DbSet<Admin> Admins => Set<Admin>();
+    public DbSet<Customer> Customers => Set<Customer>();
     public DbSet<ImageAsset> Images => Set<ImageAsset>();
     public DbSet<Material> Materials => Set<Material>();
     public DbSet<Design> Designs => Set<Design>();
@@ -16,6 +17,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
     {
         modelBuilder.Entity<Admin>().HasIndex(x => x.Email).IsUnique();
         modelBuilder.Entity<Admin>().HasIndex(x => x.Username).IsUnique();
+        modelBuilder.Entity<Customer>().HasIndex(x => x.Email).IsUnique();
         modelBuilder.Entity<Material>().Property(x => x.Price).HasPrecision(12, 2);
         modelBuilder.Entity<Design>().Property(x => x.TotalPrice).HasPrecision(12, 2);
         modelBuilder.Entity<DesignImage>().HasKey(x => new { x.DesignId, x.ImageAssetId });

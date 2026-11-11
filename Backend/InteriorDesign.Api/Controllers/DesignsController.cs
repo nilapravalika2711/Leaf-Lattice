@@ -1,4 +1,4 @@
-﻿using InteriorDesign.Api.DTOs.Designs;
+using InteriorDesign.Api.DTOs.Designs;
 using InteriorDesign.Api.Models;
 using InteriorDesign.Api.Repositories;
 using InteriorDesign.Api.Services;
@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InteriorDesign.Api.Controllers;
 
-[ApiController, Authorize, Route("api/designs")]
+[ApiController, Authorize(Roles = "Admin"), Route("api/designs")]
 public sealed class DesignsController(IDesignRepository designs) : ControllerBase
 {
     [HttpGet]
@@ -25,6 +25,7 @@ public sealed class DesignsController(IDesignRepository designs) : ControllerBas
         var item = new Design
         {
             Name = request.Name.Trim(), Description = request.Description.Trim(), Category = request.Category.Trim(), TotalPrice = request.TotalPrice,
+            IsPublished = request.IsPublished,
             DesignImages = links.Images.Select(x => new DesignImage { ImageAsset = x }).ToList(),
             DesignMaterials = links.Materials.Select(x => new DesignMaterial { Material = x }).ToList()
         };
@@ -39,7 +40,7 @@ public sealed class DesignsController(IDesignRepository designs) : ControllerBas
         var links = await ResolveLinks(request, ct);
         if (links.Error is not null) return BadRequest(new { message = links.Error });
         item.Name = request.Name.Trim(); item.Description = request.Description.Trim(); item.Category = request.Category.Trim();
-        item.TotalPrice = request.TotalPrice; item.UpdatedAtUtc = DateTime.UtcNow;
+        item.TotalPrice = request.TotalPrice; item.IsPublished = request.IsPublished; item.UpdatedAtUtc = DateTime.UtcNow;
         item.DesignImages.Clear();
         foreach (var image in links.Images) item.DesignImages.Add(new DesignImage { DesignId = item.Id, ImageAssetId = image.Id, ImageAsset = image });
         item.DesignMaterials.Clear();

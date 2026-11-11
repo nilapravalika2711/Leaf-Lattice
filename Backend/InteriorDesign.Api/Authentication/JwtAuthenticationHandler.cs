@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -36,12 +36,13 @@ public sealed class JwtAuthenticationHandler(
                 root.GetProperty("aud").GetString() != configuration["Jwt:Audience"] ||
                 root.GetProperty("exp").GetInt64() <= now)
                 return Task.FromResult(AuthenticateResult.Fail("Expired or invalid bearer token."));
+            var role = root.TryGetProperty("role", out var roleEl) && !string.IsNullOrWhiteSpace(roleEl.GetString()) ? roleEl.GetString()! : "Admin";
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, root.GetProperty("sub").GetString() ?? ""),
                 new Claim(ClaimTypes.Name, root.GetProperty("name").GetString() ?? ""),
                 new Claim(ClaimTypes.Email, root.GetProperty("email").GetString() ?? ""),
-                new Claim(ClaimTypes.Role, "Admin")
+                new Claim(ClaimTypes.Role, role)
             };
             var identity = new ClaimsIdentity(claims, Scheme.Name);
             return Task.FromResult(AuthenticateResult.Success(new AuthenticationTicket(new ClaimsPrincipal(identity), Scheme.Name)));
