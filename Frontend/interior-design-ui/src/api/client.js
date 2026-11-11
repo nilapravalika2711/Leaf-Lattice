@@ -34,7 +34,7 @@ export async function request(path, { method = 'GET', body, form = false, auth }
   let token = null
   if (auth === 'customer' || path.startsWith('/customer')) {
     token = getCustomerToken()
-  } else if (auth === 'admin' || path.startsWith('/images') || path.startsWith('/materials') || path.startsWith('/designs')) {
+  } else if (auth === 'admin' || path.startsWith('/images') || path.startsWith('/materials') || path.startsWith('/designs') || path.startsWith('/admin')) {
     token = getAdminToken()
   } else {
     token = getAdminToken() || getCustomerToken()
@@ -95,6 +95,42 @@ export const designsApi = {
 export const customerDesignsApi = {
   list: () => request('/customer/designs', { auth: 'customer' }),
   get: (id) => request(`/customer/designs/${id}`, { auth: 'customer' }),
+}
+
+// --- Customer Enquiries & Purchase Requests ---
+export const customerEnquiriesApi = {
+  submit: (body) => request('/customer/enquiries', { method: 'POST', body, auth: 'customer' }),
+  listMine: () => request('/customer/enquiries', { auth: 'customer' }),
+}
+
+export const customerPurchaseRequestsApi = {
+  submit: (body) => request('/customer/purchase-requests', { method: 'POST', body, auth: 'customer' }),
+  listMine: () => request('/customer/purchase-requests', { auth: 'customer' }),
+}
+
+// --- Admin Enquiries & Purchase Requests ---
+export const adminEnquiriesApi = {
+  list: (params = {}) => {
+    const q = new URLSearchParams()
+    if (params.status) q.append('status', params.status)
+    if (params.search) q.append('search', params.search)
+    const queryString = q.toString() ? `?${q.toString()}` : ''
+    return request(`/admin/enquiries${queryString}`, { auth: 'admin' })
+  },
+  get: (id) => request(`/admin/enquiries/${id}`, { auth: 'admin' }),
+  updateStatus: (id, body) => request(`/admin/enquiries/${id}`, { method: 'PUT', body, auth: 'admin' }),
+}
+
+export const adminPurchaseRequestsApi = {
+  list: (params = {}) => {
+    const q = new URLSearchParams()
+    if (params.status) q.append('status', params.status)
+    if (params.search) q.append('search', params.search)
+    const queryString = q.toString() ? `?${q.toString()}` : ''
+    return request(`/admin/purchase-requests${queryString}`, { auth: 'admin' })
+  },
+  get: (id) => request(`/admin/purchase-requests/${id}`, { auth: 'admin' }),
+  updateStatus: (id, body) => request(`/admin/purchase-requests/${id}`, { method: 'PUT', body, auth: 'admin' }),
 }
 
 export const imageUrl = (path) => path ? `${API_ROOT.replace(/\/api$/, '')}${path}` : ''

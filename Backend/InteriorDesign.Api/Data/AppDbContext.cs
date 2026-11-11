@@ -12,6 +12,8 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
     public DbSet<Design> Designs => Set<Design>();
     public DbSet<DesignImage> DesignImages => Set<DesignImage>();
     public DbSet<DesignMaterial> DesignMaterials => Set<DesignMaterial>();
+    public DbSet<CustomerEnquiry> CustomerEnquiries => Set<CustomerEnquiry>();
+    public DbSet<PurchaseRequest> PurchaseRequests => Set<PurchaseRequest>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -26,5 +28,18 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         modelBuilder.Entity<DesignMaterial>().HasKey(x => new { x.DesignId, x.MaterialId });
         modelBuilder.Entity<DesignMaterial>().HasOne(x => x.Design).WithMany(x => x.DesignMaterials).HasForeignKey(x => x.DesignId).OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<DesignMaterial>().HasOne(x => x.Material).WithMany(x => x.DesignMaterials).HasForeignKey(x => x.MaterialId).OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<CustomerEnquiry>(entity =>
+        {
+            entity.HasOne(x => x.Customer).WithMany(x => x.Enquiries).HasForeignKey(x => x.CustomerId).OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(x => x.Design).WithMany(x => x.Enquiries).HasForeignKey(x => x.DesignId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<PurchaseRequest>(entity =>
+        {
+            entity.Property(x => x.DesignPrice).HasPrecision(12, 2);
+            entity.HasOne(x => x.Customer).WithMany(x => x.PurchaseRequests).HasForeignKey(x => x.CustomerId).OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(x => x.Design).WithMany(x => x.PurchaseRequests).HasForeignKey(x => x.DesignId).OnDelete(DeleteBehavior.Cascade);
+        });
     }
 }

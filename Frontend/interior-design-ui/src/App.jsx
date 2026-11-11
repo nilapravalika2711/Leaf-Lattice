@@ -6,11 +6,15 @@ import ImagesPage from './pages/ImagesPage.jsx'
 import MaterialsPage from './pages/MaterialsPage.jsx'
 import DesignsPage from './pages/DesignsPage.jsx'
 import CustomerDashboard from './pages/CustomerDashboard.jsx'
+import AdminEnquiriesPage from './pages/AdminEnquiriesPage.jsx'
+import AdminPurchaseRequestsPage from './pages/AdminPurchaseRequestsPage.jsx'
 
 const links = [
   { path: '/admin/dashboard', label: 'Designs & Sales', icon: '⌂' },
   { path: '/admin/images', label: 'Images', icon: '▧' },
   { path: '/admin/materials', label: 'Materials', icon: '◈' },
+  { path: '/admin/enquiries', label: 'Customer Enquiries', icon: '✉' },
+  { path: '/admin/purchase-requests', label: 'Purchase Requests', icon: '🛒' },
 ]
 
 function RootRoute() {
@@ -39,7 +43,7 @@ function ProtectedAdmin() {
     navigate('/', { replace: true })
   }
 
-  const currentLabel = links.find(x => x.path === location.pathname)?.label || 'Designs'
+  const currentLabel = links.find(x => x.path === location.pathname)?.label || 'Dashboard'
 
   return (
     <div className="admin-shell">
@@ -107,6 +111,8 @@ export default function App() {
           <Route path="/admin/designs" element={<Navigate to="/admin/dashboard" replace />} />
           <Route path="/admin/images" element={<ImagesPage />} />
           <Route path="/admin/materials" element={<MaterialsPage />} />
+          <Route path="/admin/enquiries" element={<AdminEnquiriesPage />} />
+          <Route path="/admin/purchase-requests" element={<AdminPurchaseRequestsPage />} />
         </Route>
 
         {/* Fallback */}

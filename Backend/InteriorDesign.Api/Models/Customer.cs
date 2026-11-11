@@ -7,4 +7,7 @@ public sealed class Customer
     public required string Email { get; set; }
     public required string PasswordHash { get; set; }
     public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
+
+    public ICollection<CustomerEnquiry> Enquiries { get; set; } = new List<CustomerEnquiry>();
+    public ICollection<PurchaseRequest> PurchaseRequests { get; set; } = new List<PurchaseRequest>();
 }

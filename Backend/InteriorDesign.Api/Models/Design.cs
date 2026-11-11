@@ -12,4 +12,6 @@ public sealed class Design
     public DateTime UpdatedAtUtc { get; set; } = DateTime.UtcNow;
     public ICollection<DesignImage> DesignImages { get; set; } = new List<DesignImage>();
     public ICollection<DesignMaterial> DesignMaterials { get; set; } = new List<DesignMaterial>();
+    public ICollection<CustomerEnquiry> Enquiries { get; set; } = new List<CustomerEnquiry>();
+    public ICollection<PurchaseRequest> PurchaseRequests { get; set; } = new List<PurchaseRequest>();
 }
